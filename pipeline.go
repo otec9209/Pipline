@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -100,12 +100,12 @@ func dataSource() (<-chan int, <-chan bool) {
 			scanner.Scan()
 			data := scanner.Text()
 			if strings.EqualFold(data, "exit") {
-				fmt.Println("Программа завершила работу!")
+				log.Println("Программа завершила работу!")
 				return
 			}
 			i, err := strconv.Atoi(data)
 			if err != nil {
-				fmt.Println("Программа обрабатывает только целые числа!")
+				log.Println("Программа обрабатывает только целые числа!")
 				continue
 			}
 			c <- i                             // Отправка одного числа
@@ -193,17 +193,18 @@ func bufferStageInt(done <-chan bool, c <-chan int) <-chan int {
 	return bufferedIntChan
 }
 
-// consumer - Потребитель данных от пайплайна2222222222
+// consumer - Потребитель данных от пайплайнау
 func consumer(done <-chan bool, c <-chan int) {
 	for {
 		select {
 		case data := <-c:
-			fmt.Printf("Обработаны данные: %d\n", data)
+			log.Println("Обработаны данные: %d\n", data)
 		case <-done:
 			return
 		}
 	}
 }
+
 func main() {
 	// Запускаем наш воображаемый источник данных,
 	// он же ответственен за сигнализирование о том,
